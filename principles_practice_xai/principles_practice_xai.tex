@@ -1,0 +1,191 @@
+\documentclass[11pt,dvipsnames,usenames,aspectratio=169]{beamer}  % Add handout to options to disable overlays
+
+% For more themes, color themes and font themes, see:
+% http://deic.uab.es/~iblanes/beamer_gallery/index_by_theme.html
+%
+\mode<presentation>
+{%
+  \usetheme{CambridgeUS}    % or try default, Darmstadt, Warsaw, ...
+  \usecolortheme{whale}     % or try albatross, beaver, crane, ...
+  \usefonttheme{serif}          % or try default, structurebold, ...
+  % \usefonttheme[onlymath]{serif}
+  % \setbeamertemplate{navigation symbols}{}
+  % \setbeamercovered{transparent}
+
+  \setbeamercolor{title}{fg=white}
+  \setbeamerfont{title}{series=\bfseries}
+  \setbeamercolor{frametitle}{fg=black}
+  \setbeamerfont{frametitle}{series=\bfseries}
+
+  \setbeamercolor{section in head/foot}{fg=white}
+  \setbeamerfont{section in head/foot}{series=\bfseries}
+  \setbeamercolor{subsection in head/foot}{fg=white}
+  \setbeamerfont{subsection in head/foot}{series=\bfseries}
+  \setbeamercolor{author in head/foot}{fg=white}
+  \setbeamerfont{author in head/foot}{series=\bfseries}
+  \setbeamercolor{title in head/foot}{fg=white}
+  \setbeamerfont{title in head/foot}{series=\bfseries}
+
+  \setbeamercolor{block title}{use=structure,fg=white,bg=title in head/foot.bg}
+  \setbeamerfont{block title}{series=\bfseries}
+  \setbeamercolor{block body}{use=structure,fg=black,bg=black!1!white}
+}
+
+% Support graying out frame elements
+\newcommand{\FrameOpague}{\setbeamercovered{again covered={\opaqueness<1->{40}}}}
+% Transition slide
+\newcommand{\transitionFrame}[1]{%
+{%
+  \begin{frame}[plain,noframenumbering]{}{} % the plain option removes the sidebar and header from the title page
+    \setbeamertemplate{final page}[text]{\Large \textbf{#1}}
+    \usebeamertemplate{final page}
+  \end{frame}}
+}
+
+% Imported via UltiSnips
+\usepackage{graphicx} % Loading the package
+\graphicspath{{img/}} % Setting the default folder containing the graphics
+
+\usepackage[numbers]{natbib}
+\usepackage{appendixnumberbeamer}
+
+% Here's where the presentation starts, with the info for the title slide
+\title[Principles \& Practice of Explainable ML]{Principles and Practice of Explainable Machine Learning}
+\author[Belle \& Papantonis]{%
+  {Vaishak Belle}\inst{1}\inst{2}
+  \and
+  {Ioannis Papantonis}\inst{1}
+}
+
+\institute[Univ.\ Edinburgh]{%
+  \textsuperscript{1}\textbf{University of Edinburgh}
+  \and
+  \textsuperscript{2}\textbf{Alan Turing Institute}
+}
+\date{October~8, 2020}
+
+% Imported via UltiSnips
+\input{global_macros}
+\input{macros}
+
+\begin{document}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\begin{frame}{Let's Start with a Case Study\ldots}
+  \noindent
+  Before examining the problem from a technical perspective, let's think through a \textit{real-world} scenario
+  \begin{itemize}
+    \item Help us identify salient ideas
+    \item Allow us to construct a working vocabulary
+  \end{itemize}
+
+  \vspace{18pt}
+  \onslide<2->{
+    \noindent
+    \textbf{Note}: A case study appears at the end of paper, but I think the following will yield a more fruitful discussion.
+  }
+\end{frame}
+
+\begin{frame}{Fair Criminal Sentencing}
+  \begin{itemize}[<+->]
+    \setlength{\itemsep}{22pt}
+    \onslide<+->{\item I get this is a bit heavy topic\ldots}
+
+    \onslide<+->{\item \textbf{Sentence}: Punishment (e.g.,~fine, probation, imprisonment, restituion) assigned in relation to a specific criminal act.}
+
+    \onslide<+->{\item \green{\textbf{Accurate}}/appropriate sentencing is \textbf{critical} for a healthy justice system.}
+
+    \onslide<+->{%
+      \item \textbf{Key Attributes of an Appropriate Sentencing Apparatus}
+      \begin{itemize}
+        \setlength{\itemsep}{3pt}
+        \item \textit{Consistent}: Similar crimes/circumstances should yield similar punishments.
+        \item \textit{Understandable}: Clarity \textit{why} the selected sentence is appropriate
+        \item \textit{Transparent}: Knowledge of \textit{how} the sentence was selected sentence
+        \item \textit{Sufficient}: Ensures justice for the victims and keeps the public safe
+      \end{itemize}
+    }
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Problem with Sentencing Today}
+  \onslide<+->{\textbf{\blue{Major Problem}}: Human juries/judges badly affected by bias\ldots}
+
+  \onslide<+->{%
+    \begin{itemize}
+      \setlength{\itemsep}{22pt}
+      \item \textbf{Racial Bias}: An African-American defendant is 5.9x as likely to be imprisoned as a white defendant. Hispanics are 3.1x as likely.~\citep{SentencingProject}
+
+      \item \textbf{Gender Bias}: Men receive 63\% longer sentences on average than women do. Women are twice as likely to avoid incarceration if convicted.~\citep{Starr:2014}
+
+      \item \textbf{Wealth Effects}: Poor defendants more likely to plead guilty since they cannot afford bail and lack a safety net to afford remaining in prison until trial
+    \end{itemize}
+  }
+\end{frame}
+
+\begin{frame}{Here's an Idea\ldots}
+  \onslide<+->{Take the \textit{humans} out of sentencing
+    \begin{itemize}
+      \item Make it entirely ``data driven''
+    \end{itemize}
+  }
+
+  \vspace{22pt}
+  \onslide<+->{%
+    Use machine learning to estimate the \green{recidivism rate}. \textbf{Three types of recidivism}:
+    \begin{itemize}
+      \item \textit{Pretrial recidivism}
+      \item \textit{General recidivism}
+      \item \textit{Pretrial recidivism}
+    \end{itemize}
+  }
+
+  \vspace{22pt}
+  \onslide<+->{\blue{\textbf{COMPAS}}: \underline{C}orrectional \underline{O}ffender \underline{M}anagement \underline{P}rofiling for \underline{A}lternative \underline{S}anctions
+    \begin{itemize}
+      \item Released: 2009
+      \item \green{\textbf{Proprietary}} (Developed by private company Northpointe)
+    \end{itemize}
+  }
+\end{frame}
+
+\begin{frame}{You May See Where This is Going\ldots}
+  \begin{center}
+    \onslide<2->{
+      \includegraphics[scale=0.55]{propublica_compas_small.png}
+    }
+  \end{center}
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Bibliography}
+  {\tiny
+    \frametitle{References}
+    \bibliography{bib/ref.bib}
+    \bibliographystyle{unsrtnat}
+  }
+\end{frame}
+
+\begin{frame}{Some of the Highlights\ldots}
+  \begin{itemize}
+    \item
+
+    \item ``More accurate than a human''~\citep{Dressel:2018}
+      \begin{itemize}[<+->]
+        \item
+      \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{}
+  \onslide<+->{%
+    \blue{\textbf{Discussion Questions}}:
+    \begin{itemize}
+      \item What other high-level themes do you see in this example?
+      \item Is there such a thing as a free lunch? Can I have it all?
+    \end{itemize}
+  }
+\end{frame}
+\end{document}
