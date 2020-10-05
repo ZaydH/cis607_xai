@@ -48,6 +48,7 @@
 
 \usepackage[numbers]{natbib}
 \usepackage{appendixnumberbeamer}
+\usepackage{hyperref}
 
 % Here's where the presentation starts, with the info for the title slide
 \title[Principles \& Practice of Explainable ML]{Principles and Practice of Explainable Machine Learning}
@@ -67,6 +68,11 @@
 % Imported via UltiSnips
 \input{global_macros}
 \input{macros}
+
+% Enable (uncolored) cross-reference hyperlinks
+% Should always be last package loaded.
+% See: https://tex.stackexchange.com/questions/103123/links-do-not-lead-to-right-pages
+\usepackage[colorlinks=false]{hyperref}
 
 \begin{document}
 
@@ -168,24 +174,102 @@
   }
 \end{frame}
 
-\begin{frame}{Some of the Highlights\ldots}
-  \begin{itemize}
-    \item
+\begin{frame}{Some of the Highlights (or Lowlights)\ldots}
+  \noindent
+  \onslide<+->{\textbf{Source}:~\citet{Angwin:2016} (7~years after COMPAS' initial release)}
 
-    \item ``More accurate than a human''~\citep{Dressel:2018}
+  \begin{itemize}[<+->]
+    \setlength{\itemsep}{12pt}
+    \item ``blacks are almost twice as likely as whites to be labeled a higher risk but not actually re-offend''
+
+    \item ``makes the opposite mistake among whites: They are much more likely than blacks to be labeled lower-risk but go on to commit other crimes.''
+
+    \item Only 20\% of people predicted to commit violent crimes actually went on to do so.
+
+    \item ``More \green{accurate} than a human''~\citep{Dressel:2018}
       \begin{itemize}[<+->]
-        \item
+        \item Individual with \textit{No Expertise} in Criminal Justice: 63\% accuracy
+        \item COMPAS: 65\% accuracy
       \end{itemize}
   \end{itemize}
+
+  \onslide<+->{
+    \begin{block}{Takeaway}
+      Explainable machine learning may have identified the model's implicit bias.
+    \end{block}
+  }
 \end{frame}
 
-\begin{frame}{}
+\begin{frame}{Summary}
+  \onslide<+->{
+    \blue{\textbf{Key Themes of Practical Machine Learning}}:
+      \begin{itemize}
+        \setlength{\itemsep}{6pt}
+        \item Proprietary IP vs.\ Transparency
+        \item Model accuracy
+        \item (Racial) bias
+        \item Human understandability
+        \item Importance of individual features (e.g.,~gender)
+      \end{itemize}
+  }
+
+  \vspace{16pt}
   \onslide<+->{%
-    \blue{\textbf{Discussion Questions}}:
+    \green{\textbf{Discussion Questions}}:
     \begin{itemize}
       \item What other high-level themes do you see in this example?
       \item Is there such a thing as a free lunch? Can I have it all?
     \end{itemize}
   }
+\end{frame}
+
+\begin{frame}{Types of Explanations}{}
+  {\small
+    \begin{itemize}[<+->]
+      \setlength{\itemsep}{15pt}
+      \item \textbf{\green{Text Explanation}}: Using symbols (e.g.,~natural language text, or propositional sumbols) to explain the model's behavior
+      \item \textbf{\green{Visual Explanation}}: Generate visualization that facilitate understanding, e.g.,~heat map
+      \item \textbf{\green{Local Explanation}}: Explain how a model operates in a certain area of interest, e.g.,~explain the prediction for a specific instance
+      \item \textbf{\green{Explanations by Example}}: Extract \textit{representative instances} from the training dataset
+      \item \textbf{\green{Explanation by Simplification}}: Approximate an \textit{opaque} model using a simpler, easier-to-interpret one
+      \item \textbf{\green{}}:
+    \end{itemize}
+  }
+\end{frame}
+
+\begin{frame}{Explanations by Example}{}
+  \begin{columns}
+    \begin{column}{0.45\textwidth}
+      \begin{itemize}
+        \setlength{\itemsep}{22pt}
+        \item Common approach in human learning via \green{prototypical examples}
+        \item \blue{\textbf{Example}}: \href{https://quickdraw.withgoogle.com/}{Google Quick, Draw!}~\citep{Cai:2019}
+          \begin{itemize}
+          \setlength{\itemsep}{8pt}
+            \item Like charades or the old TV~show ``\href{https://en.wikipedia.org/wiki/Win,_Lose_or_Draw}{Win, Lose, or Draw}''
+            \item Given a prompt and the user draws it
+            \item AI tries to guess the picture
+          \end{itemize}
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.1\textwidth}
+    \end{column}
+    \begin{column}{0.45\textwidth}
+      \onslide<2->{%
+        \includegraphics[scale=0.20]{avocado_quick_draw.png}
+      }
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Local Explanation}
+  \blue{\textbf{Obvious Question}}: Why was this \textit{particular instance} mispredicted?
+
+  \vspace{16pt}
+  \begin{center}
+    \onslide<2->{
+          \includegraphics[scale=0.264]{avocado_alternates_quick_draw.png}
+    }
+  \end{center}
 \end{frame}
 \end{document}
