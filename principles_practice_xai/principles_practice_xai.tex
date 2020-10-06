@@ -48,17 +48,16 @@
 
 \usepackage[numbers]{natbib}
 \usepackage{appendixnumberbeamer}
-\usepackage{hyperref}
 
 % Here's where the presentation starts, with the info for the title slide
-\title[Principles \& Practice of Explainable ML]{Principles and Practice of Explainable Machine Learning}
+\title[Principles Explainable ML]{Principles and Practice of Explainable Machine Learning}
 \author[Belle \& Papantonis]{%
   {Vaishak Belle}\inst{1}\inst{2}
   \and
   {Ioannis Papantonis}\inst{1}
 }
 
-\institute[Univ.\ Edinburgh]{%
+\institute[U.\ Edinburgh]{%
   \textsuperscript{1}\textbf{University of Edinburgh}
   \and
   \textsuperscript{2}\textbf{Alan Turing Institute}
@@ -72,7 +71,7 @@
 % Enable (uncolored) cross-reference hyperlinks
 % Should always be last package loaded.
 % See: https://tex.stackexchange.com/questions/103123/links-do-not-lead-to-right-pages
-\usepackage[colorlinks=false]{hyperref}
+\usepackage{hyperref}
 
 \begin{document}
 
@@ -80,6 +79,7 @@
   \titlepage
 \end{frame}
 
+\section{Case Study}
 \begin{frame}{Let's Start with a Case Study\ldots}
   \noindent
   Before examining the problem from a technical perspective, let's think through a \textit{real-world} scenario
@@ -132,6 +132,7 @@
   }
 \end{frame}
 
+\subsection{AI \& the Justice System}
 \begin{frame}{Here's an Idea\ldots}
   \onslide<+->{Take the \textit{humans} out of sentencing
     \begin{itemize}
@@ -164,14 +165,6 @@
       \includegraphics[scale=0.55]{propublica_compas_small.png}
     }
   \end{center}
-\end{frame}
-
-\begin{frame}[allowframebreaks]{Bibliography}
-  {\tiny
-    \frametitle{References}
-    \bibliography{bib/ref.bib}
-    \bibliographystyle{unsrtnat}
-  }
 \end{frame}
 
 \begin{frame}{Some of the Highlights (or Lowlights)\ldots}
@@ -223,16 +216,133 @@
   }
 \end{frame}
 
+\section{Model Transparency}
+
+\begin{frame}{Introduction}
+  \begin{itemize}
+    \setlength{\itemsep}{18pt}
+    \item Machine learning systems are increasingly ubiquitous
+    \item Understanding an ML system's decisions increases trust in those systems
+    \item Many different stakeholders seek to understand different aspects of an ML model
+      \begin{itemize}
+        \item \textbf{Translation}: No one-size-fits-all explanation
+      \end{itemize}
+  \end{itemize}
+
+  \onslide<2->{%
+    \begin{block}{Purpose of this Paper}
+      A broad survey of explainable ML to help \textit{industry practitioners} better understand the field and apply the right tools
+    \end{block}
+  }
+\end{frame}
+
+\section{Perspectives on Explainability}
+\subsection{Model Transparency}
+
+\begin{frame}{Properties of Transparent Models}{}
+  \onslide<+->{
+    \green{\textbf{Proprietary}} model COMPAS is maximally \textbf{\blue{opague}}, i.e., non-transparent
+    \begin{itemize}
+      \item Even can be considered a \green{black-box}
+    \end{itemize}
+  }
+
+  \vspace{20pt}
+  \onslide<+->{Levels of Model Transparency}
+  \begin{itemize}[<+->]
+    \setlength{\itemsep}{12pt}
+    \item \green{\textbf{Simulatability}}: Ability of a human to manually simulate the model
+
+    \item \green{\textbf{Decomposibility}}: Ability to break down a model into discrete (explainable) parts
+      \begin{itemize}
+        \item \textit{Example}: Input, parameters, computations, etc.
+      \end{itemize}
+
+    \item \green{\textbf{Algorithmic Transparency}}: Ability to understand the procedure the model uses to generate the output
+      \begin{itemize}
+        \item \textit{Example}: K-Nearest Neighbors
+      \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Transparent to Opaque Models: A Fuzzy Continuum}{}
+  The authors broadly categorize models as either:
+   \begin{columns}
+     \begin{column}{0.025\textwidth}
+     \end{column}
+     \begin{column}{0.40\textwidth}
+       \begin{center}
+         \textbf{\large \green{Transparent}}
+         \begin{itemize}
+           \item Linear/logistic regression
+           \item Decision tree
+           \item K-Nearest neighbors
+           \item Rule-based learning
+           \item Generalized additive models
+           \item Bayesian networks
+         \end{itemize}
+       \end{center}
+     \end{column}
+     \begin{column}{0.05\textwidth}
+     \end{column}
+     \begin{column}{0.40\textwidth}
+       \begin{center}
+         \textbf{\large \green{Opaque}}
+         \begin{itemize}
+           \item Random forests
+           \item Support vector machines
+           \item Multi-layer (i.e.,~deep) neural networks
+         \end{itemize}
+       \end{center}
+     \end{column}
+     \begin{column}{0.025\textwidth}
+     \end{column}
+   \end{columns}
+
+   \vspace{16pt}
+   \onslide<2->{\blue{\textbf{Discussion}}: Going around around the room, each person will pick a particular model class and explain why a particular model falls into a particular category}
+\end{frame}
+
+\begin{frame}{Salient Theme on Algorithmic Transparency}
+  \blue{\textbf{No Free Lunch}}*:  Clear, consistent trade-off between model complexity and transparency
+
+  \vspace{16pt}
+  \textbf{\blue{What that Means in Practice}}: Gaining transparency/explainability often means sacrificing (some) performance
+
+  \vspace{16pt}
+  \onslide<+->{\textbf{\green{Question}}: Are all models from a ``transparent'' model class actually transparent?}
+  \begin{itemize}[<+->]
+    \item No.  \textit{Why}?
+    \item Similarly, not all models from an ``opaque'' model class is opaque.
+    \item There's some nuance here.  It's a fuzzy classification.
+  \end{itemize}
+
+\end{frame}
+
+\subsection{Evaluation Criteria}
+
+\begin{frame}{Criteria for Evaluating an Explainability Method}
+  \begin{itemize}[<+->]
+    \setlength{\itemsep}{19pt}
+    \item \green{\textbf{Comprehensibility}}: Are the extracted represents understandable to a human?
+    \item \green{\textbf{Fidelity}}: How accurately do the extracted representations capture the opaque model?
+    \item \green{\textbf{Accuracy}}: How well do the extracted representations predict unseen examples?
+    \item \green{\textbf{Scalability}}: Ability of the method to scale to large input dimensions/model sizes
+    \item \green{\textbf{Generality}}: Does the mechanism induce a special training procedure?
+  \end{itemize}
+\end{frame}
+
+\subsection{Types of Explanations}
 \begin{frame}{Types of Explanations}{}
   {\small
     \begin{itemize}[<+->]
-      \setlength{\itemsep}{15pt}
-      \item \textbf{\green{Text Explanation}}: Using symbols (e.g.,~natural language text, or propositional sumbols) to explain the model's behavior
+      \setlength{\itemsep}{14pt}
+      \item \textbf{\green{Text Explanation}}: Using symbols (e.g.,~natural language text, or propositional symbols) to explain the model's behavior
       \item \textbf{\green{Visual Explanation}}: Generate visualization that facilitate understanding, e.g.,~heat map
       \item \textbf{\green{Local Explanation}}: Explain how a model operates in a certain area of interest, e.g.,~explain the prediction for a specific instance
       \item \textbf{\green{Explanations by Example}}: Extract \textit{representative instances} from the training dataset
       \item \textbf{\green{Explanation by Simplification}}: Approximate an \textit{opaque} model using a simpler, easier-to-interpret one
-      \item \textbf{\green{}}:
+      \item \textbf{\green{Feature Relevance Explanations}}: Quantify the influence of each feature
     \end{itemize}
   }
 \end{frame}
@@ -271,5 +381,13 @@
           \includegraphics[scale=0.264]{avocado_alternates_quick_draw.png}
     }
   \end{center}
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Bibliography}{}
+  {\tiny
+    \frametitle{References}
+    \bibliography{bib/ref.bib}
+    \bibliographystyle{unsrtnat}
+  }
 \end{frame}
 \end{document}
