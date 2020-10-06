@@ -304,7 +304,7 @@
 \end{frame}
 
 \begin{frame}{Salient Theme on Algorithmic Transparency}
-  \blue{\textbf{No Free Lunch}}*:  Clear, consistent trade-off between model complexity and transparency
+  \blue{\textbf{No Free Lunch}}*:  Clear, consistent trade-off between \textit{model complexity} and \textit{transparency}
 
   \vspace{16pt}
   \textbf{\blue{What that Means in Practice}}: Gaining transparency/explainability often means sacrificing (some) performance
@@ -327,7 +327,7 @@
     \item \green{\textbf{Comprehensibility}}: Are the extracted represents understandable to a human?
     \item \green{\textbf{Fidelity}}: How accurately do the extracted representations capture the opaque model?
     \item \green{\textbf{Accuracy}}: How well do the extracted representations predict unseen examples?
-    \item \green{\textbf{Scalability}}: Ability of the method to scale to large input dimensions/model sizes
+    \item \green{\textbf{Scalability}}: Ability of the method to scale to large input dimensions/model complexities
     \item \green{\textbf{Generality}}: Does the mechanism induce a special training procedure?
   \end{itemize}
 \end{frame}
@@ -345,6 +345,15 @@
       \item \textbf{\green{Feature Relevance Explanations}}: Quantify the influence of each feature
     \end{itemize}
   }
+\end{frame}
+
+\begin{frame}{Visualization Explanation Types}
+  \begin{center}
+    \includegraphics[scale=0.177]{visual_representation_explanation_types.png}
+  \end{center}
+  \begin{flushright}
+    {\vspace{-16pt} \tiny Source:~\citet{Arrieta:2020}}
+  \end{flushright}
 \end{frame}
 
 \begin{frame}{Explanations by Example}{}
@@ -381,6 +390,93 @@
           \includegraphics[scale=0.264]{avocado_alternates_quick_draw.png}
     }
   \end{center}
+\end{frame}
+
+\section{Explainability Approaches}
+
+\begin{frame}{Explainability Approaches}
+
+\end{frame}
+
+\subsection{Random-Forest Specific}
+\begin{frame}{}
+
+\end{frame}
+
+
+\subsection{Model Agnostic}
+
+\begin{frame}{Model Agnostic Explainability Approaches}
+  \textbf{Primary Advantage}: Generally applicable and flexible
+\end{frame}
+
+\begin{frame}{Explainability by Simplification: LIME}
+  \noindent
+  \textbf{Greatest Hit}: \underline{L}ocal \underline{I}interpretable \underline{M}odel-Agnostic \underline{E}xplanations~\citep{Ribeiro:2016}
+
+\end{frame}
+
+\begin{frame}{Feature Relevance: SHAP}
+  \noindent
+  \textbf{Greatest Hit}: \underline{Sh}apley \underline{A}dditive ex\underline{p}lanations~\citep{Lundberg:2017}
+  \begin{itemize}
+    \item \textbf{\green{Shapley Value} of a Feature}: Average, expected marginal contribution to the model's decision
+    \item Strong mathematical foundation in conditional game theory
+  \end{itemize}
+
+  \vspace{18pt}
+  \noindent
+  \textbf{Basic Objective}: Train a linear model around the instance to be explained
+  \begin{itemize}
+    \item Linear models make the weight of each feature obvious
+  \end{itemize}
+
+  \vspace{18pt}
+  \noindent
+  \textbf{Strong Assumption}: Each feature is independent
+\end{frame}
+
+\begin{frame}{Visual Explanation: ICE}
+  % \begin{columns}
+  %   \begin{column}{0.5\textwidth}
+      \textbf{Greatest Hit}: \underline{I}ndividual \underline{C}onditional \underline{E}xpectation~\citep{Goldstein:2015}
+
+      \begin{itemize}
+        \setlength{\itemsep}{10pt}
+        \item Operates on the instance level
+        \item Depicts model decision boundary as a function of a single feature
+      \end{itemize}
+
+      \vspace{8pt}
+      \begin{center}
+        \includegraphics[scale=0.2]{ice_plots.png}
+      \end{center}
+    % \end{column}
+  % \end{columns}
+\end{frame}
+
+\section{Conclusions}
+\begin{frame}{Closing Thoughts}{}
+  \textbf{Audience First}: The best visualization depends on the needs/requirements of the particular audience targeted.
+
+  \vspace{18pt}
+  \textbf{Try Diverse Methods}: Relying one algorithm/explanation type only gives a partial picture
+\end{frame}
+\begin{frame}{Good (Ordered) Rules of Thumb}{}
+  \begin{enumerate}
+    \setlength{\itemsep}{16pt}
+    \item If explainability is essential for the application, try a transparent model first.
+    \item If a transparent model does not perform well enough and \textit{you lose the explainability benefit}, use an opaque model.
+    \item Employ a \textit{feature-relevance method} to get an instance-specific estimate of feature influence.
+    \item Use a \textit{model simplification approach} to see if the locally important features are globally influential.
+    \item Use a visualization technique to plot the decision boundary as a function of important features
+  \end{enumerate}
+\end{frame}
+
+\appendix
+
+\begin{frame} {Table of Contents}
+  \tableofcontents
 \end{frame}
 
 \begin{frame}[allowframebreaks]{Bibliography}{}
