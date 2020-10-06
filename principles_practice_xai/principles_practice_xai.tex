@@ -199,7 +199,7 @@
       \begin{itemize}
         \setlength{\itemsep}{6pt}
         \item Proprietary IP vs.\ Transparency
-        \item Model accuracy
+        \item Model accuracy critical with very high stakes
         \item (Racial) bias
         \item Human understandability
         \item Importance of individual features (e.g.,~gender)
@@ -394,31 +394,90 @@
 
 \section{Explainability Approaches}
 
-\begin{frame}{Explainability Approaches}
-
-\end{frame}
+\transitionFrame{\LARGE Post-Hoc Explainability Approaches: \\\vspace{6pt} Two Categories}
 
 \subsection{Random-Forest Specific}
-\begin{frame}{}
+\begin{frame}{Random Forest Explainability Approaches}
+  \noindent
+  Random forests~(RF) are among the best performing ML algorithms for a wide variety of domains.
 
+  \vspace{18pt}
+  \noindent
+  First we examine, post-hoc RF explainability algorithms
+  \begin{itemize}
+    \item \green{\textbf{Post-Hoc}}: Refers to the application of explainability methods \textit{after} model training~\citep{Molnar:2019}
+  \end{itemize}
 \end{frame}
 
+\begin{frame}{Explainability by Simplification: Rule Extraction}
+  A decision tree can be viewed as a set of ordered rules
+  \begin{itemize}
+    \item RF simplification methods seek to extract a compact set of \textit{simple} rules from these complex models.
+  \end{itemize}
+
+  \vspace{16pt}
+  \noindent
+  \green{\textbf{Various Ideas}}:
+  \begin{itemize}
+    \setlength{\itemsep}{10pt}
+    \item Convert an RF into a single decision tree
+    \item Focus on extract \textit{more representative rules} by focusing on those that are most prominent
+    \item Use local search (e.g.,~hill climbing) to construct a set of rules approximating the RF
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Feature Relevance}
+  \green{\textbf{Extensive Previous Work}} -- Topics include:
+  \begin{itemize}
+    \setlength{\itemsep}{15pt}
+    \item Assess importance of individual features by computing how much the model's accuracy drops after excluding the feature
+    \item Estimate the importance of a feature by measuring how much it needs to change to affect the model's prediction.  \textit{Intuition}: Small change, high importance
+    \item Determine which subsets of features interact together
+  \end{itemize}
+\end{frame}
 
 \subsection{Model Agnostic}
 
 \begin{frame}{Model Agnostic Explainability Approaches}
-  \textbf{Primary Advantage}: Generally applicable and flexible
+  \textbf{\blue{Primary Advantage}}: Generally applicable and flexible
+
+  \vspace{18pt}
+  \textbf{\blue{Primary Disadvantage}}: Cannot utilize a model's distinct to produce better explanations
+  \begin{itemize}
+    \item Slower
+    \item Lower fidelity
+    \item Provides limited to no insight into the operation of the learning algorithm itself
+  \end{itemize}
 \end{frame}
 
 \begin{frame}{Explainability by Simplification: LIME}
   \noindent
   \textbf{Greatest Hit}: \underline{L}ocal \underline{I}interpretable \underline{M}odel-Agnostic \underline{E}xplanations~\citep{Ribeiro:2016}
+  \begin{itemize}
+    \item Approximates an opaque model locally via a transparent model (e.g.,~linear model or decision tree)
+  \end{itemize}
 
+  \vspace{18pt}
+  \noindent
+  \textbf{Thought Experiment}: Create a model trying to identify the type of animal in a picture
+  \begin{itemize}
+    \item Necessitates high level features
+    \item LIME transforms input data into \textit{interpretable representations} understandable by humans
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Counterfactuals}
+  \begin{itemize}
+    \setlength{\itemsep}{18pt}
+    \item Instance as close as possible to an instance of interest but for which the model classifies the alternate instance differently
+
+    \item \textit{\green{Example}}: Application is denied a loan.  A counterfactual could say which factors, if changed, would have led to the loan application being improved.
+  \end{itemize}
 \end{frame}
 
 \begin{frame}{Feature Relevance: SHAP}
   \noindent
-  \textbf{Greatest Hit}: \underline{Sh}apley \underline{A}dditive ex\underline{p}lanations~\citep{Lundberg:2017}
+  \textbf{Greatest Hit}: \underline{Sh}apley \underline{A}dditive ex\underline{P}lanations~\citep{Lundberg:2017}
   \begin{itemize}
     \item \textbf{\green{Shapley Value} of a Feature}: Average, expected marginal contribution to the model's decision
     \item Strong mathematical foundation in conditional game theory
@@ -461,6 +520,9 @@
 
   \vspace{18pt}
   \textbf{Try Diverse Methods}: Relying one algorithm/explanation type only gives a partial picture
+
+  \vspace{18pt}
+  Like all machine learning systems, XAI is vulnerable to adversarial attacks.
 \end{frame}
 \begin{frame}{Good (Ordered) Rules of Thumb}{}
   \begin{enumerate}
@@ -473,11 +535,11 @@
   \end{enumerate}
 \end{frame}
 
-\appendix
-
-\begin{frame} {Table of Contents}
+\begin{frame}{Table of Contents}[noframenumbering]
   \tableofcontents
 \end{frame}
+
+\appendix
 
 \begin{frame}[allowframebreaks]{Bibliography}{}
   {\tiny
