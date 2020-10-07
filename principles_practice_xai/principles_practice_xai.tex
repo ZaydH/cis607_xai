@@ -32,7 +32,7 @@
 }
 
 % Support graying out frame elements
-\newcommand{\FrameOpague}{\setbeamercovered{again covered={\opaqueness<1->{40}}}}
+\newcommand{\FrameOpaque}{\setbeamercovered{again covered={\opaqueness<1->{40}}}}
 % Transition slide
 \newcommand{\transitionFrame}[1]{%
 {%
@@ -42,12 +42,16 @@
   \end{frame}}
 }
 
+\usepackage{fontawesome}  % Used for defining the external hyperlink
+
 % Imported via UltiSnips
 \usepackage{graphicx} % Loading the package
 \graphicspath{{img/}} % Setting the default folder containing the graphics
 
 \usepackage[numbers]{natbib}
 \usepackage{appendixnumberbeamer}
+
+% \hypersetup{colorlinks=true,allcolors=blue}
 
 % Here's where the presentation starts, with the info for the title slide
 \title[Principles Explainable ML]{Principles and Practice of Explainable Machine Learning}
@@ -72,6 +76,8 @@
 % Should always be last package loaded.
 % See: https://tex.stackexchange.com/questions/103123/links-do-not-lead-to-right-pages
 \usepackage{hyperref}
+\let\oldhref\href
+\renewcommand{\href}[2]{\oldhref{#1}{#2\hspace{0.05cm}{\scriptsize\faExternalLink}}}
 
 \begin{document}
 
@@ -84,7 +90,7 @@
   \noindent
   Before examining the problem from a technical perspective, let's think through a \textit{real-world} scenario
   \begin{itemize}
-    \item Help us identify salient ideas
+    \item Help us identify salient themes
     \item Allow us to construct a working vocabulary
   \end{itemize}
 
@@ -98,11 +104,11 @@
 \begin{frame}{Fair Criminal Sentencing}
   \begin{itemize}[<+->]
     \setlength{\itemsep}{22pt}
-    \onslide<+->{\item I get this is a bit heavy topic\ldots}
+    \item<+-> I get this is a bit heavy topic\ldots
 
-    \onslide<+->{\item \textbf{Sentence}: Punishment (e.g.,~fine, probation, imprisonment, restituion) assigned in relation to a specific criminal act.}
+    \item<+-> \textbf{Sentence}: Punishment (e.g.,~fine, probation, imprisonment, restitution) assigned in relation to a specific criminal act.
 
-    \onslide<+->{\item \green{\textbf{Accurate}}/appropriate sentencing is \textbf{critical} for a healthy justice system.}
+    \item<+-> \green{\textbf{Accurate}}/appropriate sentencing is \textbf{critical} for a healthy and fair justice system.
 
     \onslide<+->{%
       \item \textbf{Key Attributes of an Appropriate Sentencing Apparatus}
@@ -142,7 +148,7 @@
 
   \vspace{22pt}
   \onslide<+->{%
-    Use machine learning to estimate the \green{recidivism rate}. \textbf{Three types of recidivism}:
+    \textbf{\blue{Idea}}: Use ML to estimate the \green{recidivism risk}. \textbf{Three types of recidivism}:
     \begin{itemize}
       \item \textit{Pretrial recidivism}
       \item \textit{General recidivism}
@@ -167,9 +173,9 @@
   \end{center}
 \end{frame}
 
-\begin{frame}{Some of the Highlights (or Lowlights)\ldots}
+\begin{frame}{Some of the Highlights (or maybe \textit{Lowlights})\ldots}
   \noindent
-  \onslide<+->{\textbf{Source}:~\citet{Angwin:2016} (7~years after COMPAS' initial release)}
+  \onslide<+->{\blue{\textbf{Source}}: 2016 ProPublica expos\'{e}~\citep{Angwin:2016} (7~years after COMPAS' release)}
 
   \begin{itemize}[<+->]
     \setlength{\itemsep}{12pt}
@@ -181,14 +187,14 @@
 
     \item ``More \green{accurate} than a human''~\citep{Dressel:2018}
       \begin{itemize}[<+->]
-        \item Individual with \textit{No Expertise} in Criminal Justice: 63\% accuracy
+        \item Individual with \textit{no expertise} in Criminal Justice: 63\% accuracy
         \item COMPAS: 65\% accuracy
       \end{itemize}
   \end{itemize}
 
   \onslide<+->{
     \begin{block}{Takeaway}
-      Explainable machine learning may have identified the model's implicit bias.
+      Explainable machine learning may have identified COMPAS's bias and flaws.
     \end{block}
   }
 \end{frame}
@@ -241,17 +247,17 @@
 
 \begin{frame}{Properties of Transparent Models}{}
   \onslide<+->{
-    \green{\textbf{Proprietary}} model COMPAS is maximally \textbf{\blue{opague}}, i.e., non-transparent
+    \green{\textbf{Proprietary}} COMPAS is totally \textbf{\blue{opaque}}
     \begin{itemize}
-      \item Even can be considered a \green{black-box}
+      \item Major risk of corporate AI
     \end{itemize}
   }
 
   \vspace{20pt}
-  \onslide<+->{Levels of Model Transparency}
+  \onslide<+->{\textbf{Levels of Model Transparency}}:
   \begin{itemize}[<+->]
     \setlength{\itemsep}{12pt}
-    \item \green{\textbf{Simulatability}}: Ability of a human to manually simulate the model
+    \item \green{\textbf{Simulatability}}: Can a human mentally simulate (i.e.,~calculate) the model output
 
     \item \green{\textbf{Decomposibility}}: Ability to break down a model into discrete (explainable) parts
       \begin{itemize}
@@ -260,47 +266,47 @@
 
     \item \green{\textbf{Algorithmic Transparency}}: Ability to understand the procedure the model uses to generate the output
       \begin{itemize}
-        \item \textit{Example}: K-Nearest Neighbors
+        \item \textit{Example Transparent Model}: K-Nearest Neighbors
       \end{itemize}
   \end{itemize}
 \end{frame}
 
 \begin{frame}{Transparent to Opaque Models: A Fuzzy Continuum}{}
   The authors broadly categorize models as either:
-   \begin{columns}
-     \begin{column}{0.025\textwidth}
-     \end{column}
-     \begin{column}{0.40\textwidth}
-       \begin{center}
-         \textbf{\large \green{Transparent}}
-         \begin{itemize}
-           \item Linear/logistic regression
-           \item Decision tree
-           \item K-Nearest neighbors
-           \item Rule-based learning
-           \item Generalized additive models
-           \item Bayesian networks
-         \end{itemize}
-       \end{center}
-     \end{column}
-     \begin{column}{0.05\textwidth}
-     \end{column}
-     \begin{column}{0.40\textwidth}
-       \begin{center}
-         \textbf{\large \green{Opaque}}
-         \begin{itemize}
-           \item Random forests
-           \item Support vector machines
-           \item Multi-layer (i.e.,~deep) neural networks
-         \end{itemize}
-       \end{center}
-     \end{column}
-     \begin{column}{0.025\textwidth}
-     \end{column}
-   \end{columns}
+    \begin{columns}[t]
+      \begin{column}{0.025\textwidth}
+      \end{column}
+      \begin{column}{0.40\textwidth}
+        \begin{center}
+          \textbf{\large \green{Transparent}}
+          \begin{itemize}
+            \item Linear/logistic regression
+            \item Decision tree
+            \item K-nearest neighbors
+            \item Rule-based learning
+            \item Generalized additive models
+            \item Bayesian networks
+          \end{itemize}
+        \end{center}
+      \end{column}
+      \begin{column}{0.05\textwidth}
+      \end{column}
+      \begin{column}{0.40\textwidth}
+        \begin{center}
+          \textbf{\large \green{Opaque}}
+          \begin{itemize}
+            \item Random forests
+            \item Support vector machines
+            \item Multi-layer (i.e.,~deep) neural networks
+          \end{itemize}
+        \end{center}
+      \end{column}
+      \begin{column}{0.025\textwidth}
+      \end{column}
+    \end{columns}
 
-   \vspace{16pt}
-   \onslide<2->{\blue{\textbf{Discussion}}: Going around around the room, each person will pick a particular model class and explain why a particular model falls into a particular category}
+  \vspace{16pt}
+  \onslide<2->{\blue{\textbf{Discussion}}: Going around the room, \green{pick a model class} (e.g.,~random forest) \& \green{explain} why it falls into its category}
 \end{frame}
 
 \begin{frame}{Salient Theme on Algorithmic Transparency}
@@ -324,15 +330,25 @@
 \begin{frame}{Criteria for Evaluating an Explainability Method}
   \begin{itemize}[<+->]
     \setlength{\itemsep}{19pt}
-    \item \green{\textbf{Comprehensibility}}: Are the extracted represents understandable to a human?
+    \item \green{\textbf{Comprehensibility}}: Are the extracted representations understandable to a human?
     \item \green{\textbf{Fidelity}}: How accurately do the extracted representations capture the opaque model?
     \item \green{\textbf{Accuracy}}: How well do the extracted representations predict unseen examples?
-    \item \green{\textbf{Scalability}}: Ability of the method to scale to large input dimensions/model complexities
+    \item \green{\textbf{Scalability}}: Method's ability to scale to high dimension/large (neural) network sizes
     \item \green{\textbf{Generality}}: Does the mechanism induce a special training procedure?
   \end{itemize}
 \end{frame}
 
 \subsection{Types of Explanations}
+
+\begin{frame}{Visualization Explanation Types}
+  \begin{center}
+    \includegraphics[scale=0.177]{visual_representation_explanation_types.png}
+  \end{center}
+  \begin{flushright}
+    {\vspace{-16pt} \tiny \textbf{Source}:~\citep{Arrieta:2020}}
+  \end{flushright}
+\end{frame}
+
 \begin{frame}{Types of Explanations}{}
   {\small
     \begin{itemize}[<+->]
@@ -352,36 +368,39 @@
     \includegraphics[scale=0.177]{visual_representation_explanation_types.png}
   \end{center}
   \begin{flushright}
-    {\vspace{-16pt} \tiny Source:~\citet{Arrieta:2020}}
+    {\vspace{-16pt} \tiny \textbf{Source}:~\citep{Arrieta:2020}}
   \end{flushright}
 \end{frame}
 
-\begin{frame}{Explanations by Example}{}
+\begin{frame}{Explanations by Example\onslide<5->{ -- \blue{Normative}}}
   \begin{columns}
-    \begin{column}{0.45\textwidth}
+    \begin{column}{0.48\textwidth}
       \begin{itemize}
-        \setlength{\itemsep}{22pt}
+        \setlength{\itemsep}{18pt}
         \item Common approach in human learning via \green{prototypical examples}
-        \item \blue{\textbf{Example}}: \href{https://quickdraw.withgoogle.com/}{Google Quick, Draw!}~\citep{Cai:2019}
-          \begin{itemize}
-          \setlength{\itemsep}{8pt}
-            \item Like charades or the old TV~show ``\href{https://en.wikipedia.org/wiki/Win,_Lose_or_Draw}{Win, Lose, or Draw}''
-            \item Given a prompt and the user draws it
-            \item AI tries to guess the picture
-          \end{itemize}
+        \onslide<2->{
+          \item \blue{\textbf{Example}}: \href{https://quickdraw.withgoogle.com/}{Google Quick, Draw!}~\citep{Cai:2019}
+            \begin{itemize}
+            \setlength{\itemsep}{8pt}
+              \item Like charades or the old TV~show ``\href{https://en.wikipedia.org/wiki/Win,_Lose_or_Draw}{Win, Lose, or Draw}''
+              \item Given a prompt and the user draws it
+              \item AI tries to guess the picture
+            \end{itemize}
+        }
+        \item<3-> Let's try it together. \textbf{For the third prompt, just draw \green{\textbf{avocado}} regardless of the instruction}
       \end{itemize}
     \end{column}
     \begin{column}{0.1\textwidth}
     \end{column}
     \begin{column}{0.45\textwidth}
-      \onslide<2->{%
+      \onslide<4->{%
         \includegraphics[scale=0.20]{avocado_quick_draw.png}
       }
     \end{column}
   \end{columns}
 \end{frame}
 
-\begin{frame}{Local Explanation}
+\begin{frame}{Local Explanation by Example\only<3->{ -- \blue{Comparative}}}
   \blue{\textbf{Obvious Question}}: Why was this \textit{particular instance} mispredicted?
 
   \vspace{16pt}
@@ -394,7 +413,7 @@
 
 \section{Explainability Approaches}
 
-\transitionFrame{\LARGE Post-Hoc Explainability Approaches: \\\vspace{6pt} Two Categories}
+\transitionFrame{\LARGE \blue{Post-Hoc Explainability Approaches}: \\\vspace{6pt} Two Categories}
 
 \subsection{Random-Forest Specific}
 \begin{frame}{Random Forest Explainability Approaches}
@@ -452,7 +471,7 @@
 
 \begin{frame}{Explainability by Simplification: LIME}
   \noindent
-  \textbf{Greatest Hit}: \underline{L}ocal \underline{I}interpretable \underline{M}odel-Agnostic \underline{E}xplanations~\citep{Ribeiro:2016}
+  \textbf{\blue{Greatest Hit}}: \underline{L}ocal \underline{I}interpretable \underline{M}odel-Agnostic \underline{E}xplanations~\citep{Ribeiro:2016}
   \begin{itemize}
     \item Approximates an opaque model locally via a transparent model (e.g.,~linear model or decision tree)
   \end{itemize}
@@ -477,7 +496,7 @@
 
 \begin{frame}{Feature Relevance: SHAP}
   \noindent
-  \textbf{Greatest Hit}: \underline{Sh}apley \underline{A}dditive ex\underline{P}lanations~\citep{Lundberg:2017}
+  \textbf{\blue{Greatest Hit}}: \underline{Sh}apley \underline{A}dditive ex\underline{P}lanations~\citep{Lundberg:2017}
   \begin{itemize}
     \item \textbf{\green{Shapley Value} of a Feature}: Average, expected marginal contribution to the model's decision
     \item Strong mathematical foundation in conditional game theory
@@ -498,7 +517,7 @@
 \begin{frame}{Visual Explanation: ICE}
   % \begin{columns}
   %   \begin{column}{0.5\textwidth}
-      \textbf{Greatest Hit}: \underline{I}ndividual \underline{C}onditional \underline{E}xpectation~\citep{Goldstein:2015}
+      \textbf{\blue{Greatest Hit}}: \underline{I}ndividual \underline{C}onditional \underline{E}xpectation~\citep{Goldstein:2015}
 
       \begin{itemize}
         \setlength{\itemsep}{10pt}
@@ -515,15 +534,7 @@
 \end{frame}
 
 \section{Conclusions}
-\begin{frame}{Closing Thoughts}{}
-  \textbf{Audience First}: The best visualization depends on the needs/requirements of the particular audience targeted.
 
-  \vspace{18pt}
-  \textbf{Try Diverse Methods}: Relying one algorithm/explanation type only gives a partial picture
-
-  \vspace{18pt}
-  Like all machine learning systems, XAI is vulnerable to adversarial attacks.
-\end{frame}
 \begin{frame}{Good (Ordered) Rules of Thumb}{}
   \begin{enumerate}
     \setlength{\itemsep}{16pt}
@@ -535,13 +546,21 @@
   \end{enumerate}
 \end{frame}
 
-\begin{frame}{Table of Contents}[noframenumbering]
+\begin{frame}{Closing Thoughts}{}
+  \textbf{Audience First}: The ``best'' explanation depends on the needs/requirements of the individual audience.
+
+  \vspace{18pt}
+  \textbf{Try Diverse Methods}: Relying one algorithm/explanation type only gives a partial picture
+
+  \vspace{18pt}
+  \textbf{Be Safe}: Like all machine learning systems, XAI is vulnerable to adversarial attacks.
+\end{frame}
+
+\begin{frame}[noframenumbering]{Table of Contents}
   \tableofcontents
 \end{frame}
 
-\appendix
-
-\begin{frame}[allowframebreaks]{Bibliography}{}
+\begin{frame}[noframenumbering,allowframebreaks]{Bibliography}{}
   {\tiny
     \frametitle{References}
     \bibliography{bib/ref.bib}
