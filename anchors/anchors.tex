@@ -1,0 +1,164 @@
+\documentclass[11pt,dvipsnames,usenames,aspectratio=169]{beamer}  % Add handout to options to disable overlays
+
+% For more themes, color themes and font themes, see:
+% http://deic.uab.es/~iblanes/beamer_gallery/index_by_theme.html
+%
+\mode<presentation>
+{%
+  \usetheme{CambridgeUS}    % or try default, Darmstadt, Warsaw, ...
+  \usecolortheme{whale}     % or try albatross, beaver, crane, ...
+  \usefonttheme{serif}          % or try default, structurebold, ...
+  % \usefonttheme[onlymath]{serif}
+  % \setbeamertemplate{navigation symbols}{}
+  % \setbeamercovered{transparent}
+
+  \setbeamercolor{title}{fg=white}
+  \setbeamerfont{title}{series=\bfseries}
+  \setbeamercolor{frametitle}{fg=black}
+  \setbeamerfont{frametitle}{series=\bfseries}
+
+  \setbeamercolor{section in head/foot}{fg=white}
+  \setbeamerfont{section in head/foot}{series=\bfseries}
+  \setbeamercolor{subsection in head/foot}{fg=white}
+  \setbeamerfont{subsection in head/foot}{series=\bfseries}
+  \setbeamercolor{author in head/foot}{fg=white}
+  \setbeamerfont{author in head/foot}{series=\bfseries}
+  \setbeamercolor{title in head/foot}{fg=white}
+  \setbeamerfont{title in head/foot}{series=\bfseries}
+
+  \setbeamercolor{block title}{use=structure,fg=white,bg=title in head/foot.bg}
+  \setbeamerfont{block title}{series=\bfseries}
+  \setbeamercolor{block body}{use=structure,fg=black,bg=black!1!white}
+}
+
+% Support graying out frame elements
+\newcommand{\FrameOpaque}{\setbeamercovered{again covered={\opaqueness<1->{40}}}}
+% Transition slide
+\newcommand{\transitionFrame}[1]{%
+{%
+  \begin{frame}[plain,noframenumbering]{}{} % the plain option removes the sidebar and header from the title page
+    \setbeamertemplate{final page}[text]{\Large \textbf{#1}}
+    \usebeamertemplate{final page}
+  \end{frame}}
+}
+
+\usepackage{fontawesome}  % Used for defining the external hyperlink
+
+% Imported via UltiSnips
+\usepackage{graphicx} % Loading the package
+\graphicspath{{img/}} % Setting the default folder containing the graphics
+
+\usepackage[numbers]{natbib}
+\usepackage{appendixnumberbeamer}
+
+% \hypersetup{colorlinks=true,allcolors=blue}
+
+% Here's where the presentation starts, with the info for the title slide
+\title[Anchors]{Anchors: High-Precision Model-Agnostic Explanations}
+\author[Belle \& Papantonis]{%
+  {Marco Tulio Ribeiro}\inst{1}
+  \and
+  {Sameer Singh}\inst{2}
+  \and
+  {Carlos Guestrin}\inst{1}
+}
+
+\institute[UW \& UCI]{%
+  \textsuperscript{1}\textbf{University of Washington}
+  \and
+  \textsuperscript{2}\textbf{University of California, Irvine}
+}
+\date{November~12, 2020}
+
+% Imported via UltiSnips
+\input{global_macros}
+\input{macros}
+
+% Enable (uncolored) cross-reference hyperlinks
+% Should always be last package loaded.
+% See: https://tex.stackexchange.com/questions/103123/links-do-not-lead-to-right-pages
+\usepackage{hyperref}
+\let\oldhref\href
+\renewcommand{\href}[2]{\oldhref{#1}{#2\hspace{0.05cm}{\scriptsize\faExternalLink}}}
+
+\begin{document}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\section{On Rules of Thumb}
+
+\begin{frame}[noframenumbering]{``If silence be good for the wise, how much better for fools.''}
+  It takes quite a fool to quote one's self\ldots
+
+  \vspace{25pt}
+  \onslide<2->{You're in luck that I am just such a fool...}
+\end{frame}
+
+\begin{frame}{SAT'2018 Paper}
+  Roughly speaking, the end result is a sampler for which one can largely \\ use the following \green{rule of thumb}:
+
+  \vspace{20pt}
+  \begin{center}
+    Generating 1,000 perfectly uniform models takes \\
+    about 10 times as long as it takes to count the models.
+  \end{center}
+\end{frame}
+
+\begin{frame}{Week 2 Presentation}
+  \begin{center}
+    \includegraphics[scale=0.15]{rule_of_thumb_pres.png}
+  \end{center}
+\end{frame}
+
+\begin{frame}{Week 5 Discussion on Canvas}
+  \textbf{Paper}: ``Manipulating and Measuring Model Interpretability''~\citep{PoursabziSangdeh:2018} \\
+  \textbf{Date}: October~29, 2020
+
+  \vspace{12pt}
+  ``I would summarize a \green{rule of thumb} for this as for most cases, combining `man and machine' was a bad idea.''
+\end{frame}
+
+\begin{frame}{What is a Rule of Thumb \& Why am I Obsessed with Them?}
+  \textbf{Standard Definition}:
+  \begin{itemize}
+    \item Broadly but not strictly accurate
+    \item Based on experience or practice rather than theory
+  \end{itemize}
+
+  \vspace{20pt}
+    \onslide<2->{\textbf{Wikipedia Criteria}: ``easily learned and easily applied procedure''
+    \begin{itemize}
+      \item You might say ``short and sweet''
+    \end{itemize}
+  }
+\end{frame}
+
+\section{On Anchors}
+
+\begin{frame}{LIME is a Bit \textit{Sour}}
+  \blue{\textbf{LIME}}: Local Interpretable Model-Agnostic Explanations~\citep{Ribeiro:2016}
+  \begin{itemize}
+    \item \textbf{Authors}: Marco Tulio Ribeiro, Sameer Singh, \& Carlos Guestrin (sound familiar?)
+  \end{itemize}
+
+  \vspace{20pt}
+  \textbf{\green{Similarity with Rules of Thumb}}
+  \begin{itemize}
+    \item Model-Agnostic $\rightarrow$ Broadly Applicable
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[noframenumbering]{Table of Contents}
+  \tableofcontents
+\end{frame}
+
+\begin{frame}[noframenumbering,allowframebreaks]{Bibliography}{}
+  {\tiny
+    \frametitle{References}
+    \bibliography{bib/ref.bib}
+    \bibliographystyle{unsrtnat}
+  }
+\end{frame}
+\end{document}
