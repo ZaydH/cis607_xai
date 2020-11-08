@@ -266,14 +266,19 @@
 
 \begin{frame}{Mathematical Formulation}
   \begin{itemize}[<+->]
+    \setlength{\itemsep}{6pt}
     \item $\func{\dec}{\domainX}{\domainY}$: Decision function
-    \item $\func{\Rule}{\domainX}{\set{\pm1}}$: \underline{A}nchor rule
+    \item $\func{\Rule}{\domainX}{\set{0,1}}$: \underline{A}nchor rule
     \item ${\Rule \in \setRule}$: Set of rules
     \item ${\dist(\cdot \vert \Rule)}$: Conditional probability distribution conditioned on rule
     \item ${\minPrec \in [0,1]}$: Minimum anchor accuracy probability
     \item \blue{Precision}:
       \begin{equation}
-        \prec{A} \defeq \expectS{z \sim \dist(\cdot \vert \Rule)}{\ind{\dec(x) = \dec(z)}}
+        \Prec{A} \defeq \expectS{z \sim \dist(\cdot \vert \Rule)}{\ind{\dec(x) = \dec(z)}}
+      \end{equation}
+    \item \blue{Coverage}:
+      \begin{equation}
+        \cov{A} \defeq \expectS{z \sim \dist(\cdot)}{A(z)}
       \end{equation}
   \end{itemize}
 \end{frame}
@@ -292,10 +297,11 @@
     \end{column}
     \begin{column}{0.33\textwidth}
       \begin{center}
-        \onslide<+->{\includegraphics[scale=0.3]{anchor_visualization.png}}
+        \onslide<+->{\includegraphics[scale=0.3]{anchor_visualization.png}
 
-        \vspace{20pt}
-        Highly non-linear
+          \vspace{20pt}
+          Highly non-linear
+        }
       \end{center}
     \end{column}
   \end{columns}
@@ -321,12 +327,62 @@
 
 \section{Efficiently Computing Anchors}
 
+\begin{frame}{Relaxing the Formulation: \textbf{\blue{Precision}}}
+  % \onslide<+->{%
+    % \blue{Precision}:
+    \begin{equation}
+      \Prec{A} \defeq \expectS{z \sim \dist(\cdot \vert \Rule)}{\ind{\dec(x) = \dec(z)}} \onslide<2->{ \geq \minPrec}
+    \end{equation}
+    % \vspace{6pt}
+    \onslide<2->{Authors used ${\minPrec = 0.95}$}
+
+    \vspace{15pt}
+    \onslide<3->{In almost all cases, ${\dist(z \vert \Rule)}$ is unknown in practice.}
+
+    \vspace{15pt}
+    \onslide<4->{
+      Relaxed formulation:
+      \begin{equation}
+        \Pr \sbrack{\Prec{A} \geq \minPrec} \geq 1 - \delta \text{.}
+      \end{equation}
+    }
+
+    \onslide<5->{\textbf{Question}: What mathematical formulation is commonly used in practice to guarantee these bounds?}
+  % }
+%   \vspace{20pt}
+%   \onslide<+->{%
+%     \blue{Coverage}:
+%     \begin{equation}
+%       \cov{A} \defeq \expectS{z \sim \dist(\cdot)}{A(z)}
+%     \end{equation}
+%   }
+\end{frame}
+
+\begin{frame}{Relaxing the Formulation: \textbf{\blue{Coverage}}}
+  Given a set of anchors with \textit{acceptable} precision, we seek rules with the best coverage.  Recall the definition of coverage:
+  \begin{equation}
+    \cov{A} \defeq \expectS{z \sim \dist(\cdot)}{A(z)}
+  \end{equation}
+
+  \vspace{20pt}
+  \onslide<2->{Combinatorial optimization problem:
+    \begin{equation}
+      \max_{\Rule \text{s.t.} \Pr\sbrack{\Prec{A} \geq \minPrec} \geq 1 - \delta} \cov{A}
+    \end{equation}
+
+    \vspace{10pt}
+    Although not an explicit constraint, greater coverage implicitly favors simpler rules.
+  }
+\end{frame}
+
+\subsection{Greedy}
 \begin{frame}{Greedy Algorithm}
   \begin{center}
-    \includegraphics[scale=0.3]{alg_greedy.png}
+    \includegraphics[scale=0.25]{alg_greedy.png}
   \end{center}
 \end{frame}
 
+\subsection{Beam Search}
 \begin{frame}{Beam Search Algorithm}
   \begin{center}
     \includegraphics[scale=0.3]{alg_beam_search.png}
