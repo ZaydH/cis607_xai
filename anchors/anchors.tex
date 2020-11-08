@@ -48,6 +48,10 @@
 \usepackage{graphicx} % Loading the package
 \graphicspath{{img/}} % Setting the default folder containing the graphics
 
+\usepackage[makeroom]{cancel}
+\renewcommand{\CancelColor}{\color{red}}
+\newcommand<>{\xxcancel}[1]{\alt#2{\xcancel{#1}\vphantom{#1}}{#1}}
+
 \usepackage[numbers]{natbib}
 \usepackage{appendixnumberbeamer}
 
@@ -55,7 +59,7 @@
 
 % Here's where the presentation starts, with the info for the title slide
 \title[Anchors]{Anchors: High-Precision Model-Agnostic Explanations}
-\author[Belle \& Papantonis]{%
+\author[Ribeiro et al.]{%
   {Marco Tulio Ribeiro}\inst{1}
   \and
   {Sameer Singh}\inst{2}
@@ -135,19 +139,177 @@
   }
 \end{frame}
 
-\section{On Anchors}
+\subsection{LIME}
 
 \begin{frame}{LIME is a Bit \textit{Sour}}
   \blue{\textbf{LIME}}: Local Interpretable Model-Agnostic Explanations~\citep{Ribeiro:2016}
   \begin{itemize}
-    \item \textbf{Authors}: Marco Tulio Ribeiro, Sameer Singh, \& Carlos Guestrin (sound familiar?)
+    \item \textbf{Authors}: Marco Tulio Ribeiro, Sameer Singh, \& Carlos Guestrin
   \end{itemize}
 
   \vspace{20pt}
   \textbf{\green{Similarity with Rules of Thumb}}
   \begin{itemize}
-    \item Model-Agnostic $\rightarrow$ Broadly Applicable
+    \item Model-agnostic $\to$ Broadly applicable
   \end{itemize}
+
+  \onslide<+->{
+    \vspace{20pt}
+    \textbf{\red{Disadvantages vs.\ Rules of Thumb}: What do you think?}
+    \begin{itemize}[<+->]
+      \item Linear model ${\stackrel{\mathclap{\mbox{\footnotesize \textnormal{?}}}}{\to}}$ Easily applied
+      \item Local explanation $\not\to$ Broadly applicable
+    \end{itemize}
+  }
+\end{frame}
+
+\section{Anchors}
+\subsection{Intuition}
+\begin{frame}{Let's Build an Intuition First\ldots}
+  \textbf{\blue{Task}}: Sentiment Analysis
+
+  \vspace{2pt}
+  \textbf{Representation}: Bag of words
+
+  \vspace{8pt}
+  \begin{center}
+    \onslide<2->{\includegraphics[scale=0.2]{sentiment_instances.png}}
+  \end{center}
+
+  \vspace{10pt}
+  \begin{columns}
+    \begin{column}{0.5\textwidth}
+      \begin{center}
+        \onslide<3->{\includegraphics[scale=0.2]{sentiment_lime.png}}
+      \end{center}
+    \end{column}
+    \begin{column}{0.5\textwidth}
+      \begin{center}
+        \onslide<4->{\includegraphics[scale=0.2]{sentiment_anchors.png}}
+      \end{center}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Anchors are Just Rules of Thumb}
+  \noindent
+  \textbf{Proposed By}: Marco Tulio Ribeiro, Sameer Singh, \& Carlos Guestrin (sound familiar?)
+
+  \vspace{20pt}
+  \noindent
+  \onslide<+->{\green{\textbf{Features vs.\ Rules of Thumb}}: What are the similarities?}
+  \begin{itemize}[<+->]
+    \item Model-agnostic $\to$ Broadly applicable
+    \item Global explanation $\to$ Broadly applicable
+    \item Compact if-then rules $\to$ Easily applied
+    \item Accurate: Let's get back to this in a bit\ldots
+  \end{itemize}
+\end{frame}
+
+\subsection{Definition}
+\begin{frame}{Definition}
+  \onslide<+->{}
+  \begin{block}{Anchor}
+    Explanation that \textit{sufficiently} explains the \textit{model} behavior
+  \end{block}
+
+  \vspace{15pt}
+  \onslide<+->{%
+    \textbf{\blue{Question}}: What does \textit{sufficiency} imply here?
+
+    \vspace{10pt}
+    \onslide<+->{\textbf{Answer}: If the rule holds, nothing else (e.g.,~features) matters.}
+
+    \vspace{10pt}
+    \begin{itemize}[<+->]
+      \item That's a big deal!  Goes even further than rules of thumb\ldots
+    \end{itemize}
+  }
+\end{frame}
+
+\begin{frame}{Let's Get Technical}
+  \onslide<+->{\textbf{Two New Metrics}: \textbf{\blue{Precision}} \& \textbf{\blue{Coverage}}}
+
+  \vspace{20pt}
+  \onslide<+->{\textbf{\blue{Precision}}: What is the definition?
+
+    \vspace{10pt}
+    \onslide<+->{%\textbf{Standard Definition}:
+      \begin{equation}
+        \xxcancel<+->{\text{Precision} \defeq \frac{TP}{TP + FP}}
+      \end{equation}
+    }
+
+    \vspace{12pt}
+    \onslide<+->{\textbf{\blue{Question}}: What is an intuitive explanation for why this definition is wrong?}
+
+    \vspace{6pt}
+    \onslide<+->{\textbf{Answer}: Reality (labels) is \textbf{\red{not}} ground-truth. The \textbf{\green{model}} is now \textit{truth}!}
+  }
+\end{frame}
+
+\begin{frame}{Let's Get Technical}
+  \onslide<+->{\textbf{Two New Metrics}: \textbf{\blue{Precision}} \& \textbf{\blue{Coverage}}}
+
+  \vspace{20pt}
+  \onslide<+->{\textbf{\blue{Coverage}}: What is the definition?
+
+    \vspace{10pt}
+    \onslide<+->{%\textbf{Standard Definition}:
+      \begin{equation}
+        \xxcancel<+->{\text{Precision} \defeq \frac{TP}{TP + FP}}
+      \end{equation}
+    }
+
+    \vspace{12pt}
+    \onslide<+->{\textbf{\blue{Question}}: What is an intuitive explanation for why this definition is wrong?}
+
+    \vspace{6pt}
+    \onslide<+->{\textbf{Answer}: Reality (labels) is \textbf{\red{not}} ground-truth. The \textbf{\green{model}} is now \textit{truth}!}
+  }
+\end{frame}
+
+\section{Limitations}
+
+\begin{frame}{Conflicting Anchors}
+  \textbf{\blue{Basic Idea So Far}}: If anchor rule applies, trust its prediction.
+
+  \vspace{15pt}
+  This could happen for a couple of reasons\ldots
+  \begin{itemize}
+    \item Anchors's probabilistic nature makes that inevitable
+    \item Submodular objective encourages low-overlap rules
+  \end{itemize}
+
+  \vspace{15pt}
+  \textbf{\blue{Question}}: What is the best solution?
+
+  \onslide<2->{\vspace{6pt}
+    \textbf{Answer}: Not obvious.  Perhaps all you can do is alert the user of the conflict and let them sort it out
+  }
+\end{frame}
+
+\begin{frame}{Graphical Explanations}
+  \textbf{Note}: This is my own perspective and not from the paper itself.
+
+  \begin{columns}
+    \begin{column}{0.5\textwidth}
+      \begin{center}
+        \includegraphics[scale=0.12]{beagle_original.png}
+      \end{center}
+    \end{column}
+    \begin{column}{0.5\textwidth}
+      \begin{center}
+        \includegraphics[scale=0.12]{beagle_anchor.png}
+      \end{center}
+    \end{column}
+  \end{columns}
+
+  \vspace{15pt}
+  \textbf{\blue{Question}}: Is this \textit{anchor} meaningful?
+
+  \vspace{6pt}
+  \onslide<2->{I would argue \textbf{\red{no}} since rule does not generalize.  It is essentially a local explanation.}
 \end{frame}
 
 \begin{frame}[noframenumbering]{Table of Contents}
