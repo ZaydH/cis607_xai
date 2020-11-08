@@ -28,8 +28,14 @@
 \usepackage{amsmath}
 \DeclareMathOperator*{\argmax}{arg\,max}
 \DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator{\sign}{sgn}
+\newcommand{\sgnp}[1]{{\sign \left( #1 \right) }}
 \usepackage{amsfonts}  % Used for \mathbb and \mathcal
 \usepackage{amssymb}
+\usepackage{bbm}       % Used for \mathbbm
+\usepackage{mathrsfs}  % Used for \mathscr
+\usepackage{relsize}   % Used for \mathsmaller and \mathlarger
+\usepackage{optidef}   % Used for mini! constrained optimization
 
 % Imported via UltiSnips
 \usepackage{mathtools} % for "\DeclarePairedDelimiter" macro
@@ -117,3 +123,5 @@
 \newcommand{\ifempty}[3]{%
   \ifthenelse{\isempty{#1}}{#2}{#3}%
 }
+
+\newcommand{\ind}[1]{\mathbbm{1}_{#1}}
