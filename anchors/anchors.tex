@@ -266,7 +266,7 @@
 
 \begin{frame}{Mathematical Formulation}
   \begin{itemize}[<+->]
-    \setlength{\itemsep}{6pt}
+    \setlength{\itemsep}{10pt}
     \item $\func{\dec}{\domainX}{\domainY}$: Decision function
     \item $\func{\Rule}{\domainX}{\set{0,1}}$: \underline{A}nchor rule
     \item ${\Rule \in \setRule}$: Set of rules
@@ -367,7 +367,7 @@
   \vspace{20pt}
   \onslide<2->{Combinatorial optimization problem:
     \begin{equation}
-      \max_{\Rule \text{s.t.} \Pr\sbrack{\Prec{A} \geq \minPrec} \geq 1 - \delta} \cov{A}
+      \max_{\Rule \text{ s.t. } \Pr\sbrack{\Prec{A} \geq \minPrec} \geq 1 - \delta} \cov{A}
     \end{equation}
 
     \vspace{10pt}
@@ -377,16 +377,53 @@
 
 \subsection{Greedy}
 \begin{frame}{Greedy Algorithm}
-  \begin{center}
-    \includegraphics[scale=0.25]{alg_greedy.png}
-  \end{center}
+  \begin{columns}
+    \begin{column}{0.5\textwidth}
+      I found the authors' explanation here a bit lacking.  I believe I have determined their main idea.
+      \begin{itemize}
+        \item If something is missing/off-base here, feel free to jump in.
+      \end{itemize}
+
+      \onslide<2->{%
+        \vspace{10pt}
+        \begin{itemize}
+          \item $\predicate_{i}$: Predicate, i.e.,~binary test
+        \end{itemize}
+
+        \vspace{10pt}
+        Function \textsc{GenerateCands} exhaustively constructs all \textit{combinations} of predicates with sufficient coverage~${{>}\minCov}$
+      }
+    \end{column}
+    \begin{column}{0.5\textwidth}
+      \begin{center}
+        \includegraphics[scale=0.20]{alg_greedy.png}
+      \end{center}
+    \end{column}
+  \end{columns}
 \end{frame}
 
 \subsection{Beam Search}
 \begin{frame}{Beam Search Algorithm}
-  \begin{center}
-    \includegraphics[scale=0.3]{alg_beam_search.png}
-  \end{center}
+  \begin{columns}
+    \begin{column}{0.5\textwidth}
+      \textbf{Beam Search}: A ``greatest-hit'' algorithm
+      \begin{itemize}
+        \item Useful to lots of domains
+        \item $\beamWidth$: Beam width
+      \end{itemize}
+
+      \vspace{10pt}
+      \textbf{\blue{Question}}: What are the differences between greedy and beam search?
+
+      \vspace{10pt}
+      \onslide<2->{\textbf{\blue{Question}}: How does the computational complexity compare?}
+    \end{column}
+    \begin{column}{0.5\textwidth}
+      \begin{center}
+        \includegraphics[scale=0.225]{alg_beam_search.png}
+      \end{center}
+    \end{column}
+  \end{columns}
 \end{frame}
 
 \section{Limitations}
