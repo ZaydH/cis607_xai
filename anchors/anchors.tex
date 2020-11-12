@@ -197,7 +197,7 @@
 
   \vspace{20pt}
   \noindent
-  \onslide<+->{\green{\textbf{Features vs.\ Rules of Thumb}}: What are the similarities?}
+  \onslide<+->{\green{\textbf{Anchors Features vs.\ Rules of Thumb}}: What are the similarities?}
   \begin{itemize}[<+->]
     \item Model-agnostic $\to$ Broadly applicable
     \item Global explanation $\to$ Broadly applicable
@@ -222,7 +222,7 @@
 
     \vspace{10pt}
     \begin{itemize}[<+->]
-      \item That's a big deal!  Goes even further than rules of thumb\ldots
+      \item That's a \textbf{\green{big deal}}!  Goes even further than rules of thumb\ldots
     \end{itemize}
   }
 \end{frame}
@@ -230,10 +230,10 @@
 \begin{frame}{Let's Get Technical: Part~1}
   \onslide<+->{\textbf{Two New Metrics}: \textbf{\blue{Precision}} \& \textbf{\blue{Coverage}}}
 
-  \vspace{20pt}
+  \vspace{16pt}
   \onslide<+->{\textbf{\blue{Precision}}: What is the definition?
 
-    \vspace{10pt}
+    \vspace{4pt}
     \onslide<+->{%\textbf{Standard Definition}:
       \begin{equation}
         \xxcancel<+->{\text{Precision} \defeq \frac{TP}{TP + FP}}
@@ -241,10 +241,13 @@
     }
 
     \vspace{12pt}
-    \onslide<+->{\textbf{\blue{Question}}: What is an intuitive explanation for why this definition is wrong?}
+    \onslide<+->{\textbf{\blue{Question~\#1}}: What is an intuitive explanation for why this definition is wrong?}
 
     \vspace{6pt}
     \onslide<+->{\textbf{Answer}: Reality (labels) is \textbf{\red{not}} ground-truth. The \textbf{\green{model}} is now \textit{truth}!}
+
+    \vspace{18pt}
+    \onslide<+->{\textbf{\blue{Question~\#2}}: Why are we using precision and not accuracy?}
   }
 \end{frame}
 
@@ -359,7 +362,7 @@
 \end{frame}
 
 \begin{frame}{Relaxing the Formulation: \textbf{\blue{Coverage}}}
-  Given a set of anchors with \textit{acceptable} precision, we seek rules with the best coverage.  Recall the definition of coverage:
+  Given a set of Anchors with \textit{acceptable} precision, we seek rules with the best coverage.  Recall the definition of coverage:
   \begin{equation}
     \cov{A} \defeq \expectS{z \sim \dist(\cdot)}{A(z)}
   \end{equation}
@@ -426,6 +429,46 @@
   \end{columns}
 \end{frame}
 
+\section{User Study}
+
+\begin{frame}{A Well-Done User Study}
+  \begin{itemize}
+    \setlength{\itemsep}{12pt}
+    \item \textbf{Focus Group}: 26~students in a machine learning course
+    \item \textbf{Three Datasets}: \texttt{adult}, \texttt{rcdv}, and \texttt{vqa}
+    \item Half see a LIME first and Anchors second
+      \begin{itemize}
+        \item Vice versa for the other half
+      \end{itemize}
+    \item \textbf{Metrics}: Precision, Coverage, \& Prediction time
+      \begin{itemize}[<+->]
+        \item \textbf{I Don't Know}\ldots: Coverage \& precision calculated \red{\textbf{only}} from examples where user made a prediction other than ``I don't know''
+        \item This is why \textit{accuracy} is an inappropriate metric
+      \end{itemize}
+    \item LIME \& Anchors: Explanations of similar size
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{User Study Results}
+  \includegraphics[scale=0.25]{img/user_study.png}
+
+  \begin{center}
+    It may be easier to read if you use a local copy of the table
+  \end{center}
+\end{frame}
+
+\begin{frame}{Always Have a Survey}
+  Counter-intuitive results always have a big impact on reviewers/readers\ldots
+  \begin{itemize}
+    \setlength{\itemsep}{10pt}
+    \item 21/26 preferred Anchors
+    \item 24/26 felt they were more precise with Anchors
+      \begin{itemize}
+        \item The 2 who felt more precise with LIME were \textit{actually} more precise with Anchors
+      \end{itemize}
+  \end{itemize}
+\end{frame}
+
 \section{Limitations}
 
 \begin{frame}{Conflicting Anchors}
@@ -452,12 +495,12 @@
   \begin{columns}
     \begin{column}{0.5\textwidth}
       \begin{center}
-        \includegraphics[scale=0.12]{beagle_original.png}
+        \includegraphics[scale=0.09]{beagle_original.png}
       \end{center}
     \end{column}
     \begin{column}{0.5\textwidth}
       \begin{center}
-        \includegraphics[scale=0.12]{beagle_anchor.png}
+        \includegraphics[scale=0.09]{beagle_anchor.png}
       \end{center}
     \end{column}
   \end{columns}
@@ -467,6 +510,9 @@
 
   \vspace{6pt}
   \onslide<2->{I would argue \textbf{\red{no}} since rule does not generalize.  It is essentially a local explanation.}
+
+  \vspace{6pt}
+  \onslide<3->{With NLP~models increasingly requiring contextual embeddings, do we have the same problem with text too?}
 \end{frame}
 
 \begin{frame}[noframenumbering]{Table of Contents}
@@ -479,5 +525,14 @@
     \bibliography{bib/ref.bib}
     \bibliographystyle{unsrtnat}
   }
+\end{frame}
+
+\begin{frame}{Talking Points: Greedy}
+  \begin{itemize}
+    \setlength{\itemsep}{8pt}
+    \item What is an intuitive explanation of multi-armed bandit?
+    \item What is the definition of \textbf{\blue{estimation error}} in machine learning theory?
+    \item What is an \textbf{intuitive} understanding of Eq.~(5)?
+  \end{itemize}
 \end{frame}
 \end{document}
